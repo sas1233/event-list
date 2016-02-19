@@ -5,9 +5,10 @@
 
 'use strict';
 
+var _ = require('lodash');
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
-
+var Event = require('../api/event/event.model');
 Thing.find({}).remove(function() {
   Thing.create({
     name : 'Development Tools',
@@ -30,20 +31,55 @@ Thing.find({}).remove(function() {
   });
 });
 
-User.find({}).remove(function() {
-  User.create({
-    provider: 'local',
-    name: 'Test User',
-    email: 'test@test.com',
-    password: 'test'
-  }, {
-    provider: 'local',
-    role: 'admin',
-    name: 'Admin',
-    email: 'admin@admin.com',
-    password: 'admin'
-  }, function() {
-      console.log('finished populating users');
-    }
-  );
-});
+User.find({}).remove(function()  {
+    User.create({
+      provider: 'local',
+      role: 'user',
+      name: 'Test User',
+      email: 'test@example.com',
+      password: 'test'
+    },
+    {
+      provider: 'local',
+      role: 'manager',
+      name: 'Manager',
+      email: 'manager@example.com',
+      password: 'manager'
+    },
+    {
+      provider: 'local',
+      role: 'admin',
+      name: 'Admin',
+      email: 'admin@example.com',
+      password: 'admin'
+    },function(){
+    console.log('finished populating users'); 
+  
+  
+      Event.find({}).remove(function(){
+        User.find(function(err,users)  { 
+        var byRoles = _.groupBy(users,'role');
+         users.forEach(function(user){
+           if(user.role==='user'){
+             user._manager=byRoles['manager'][0]._id 
+           }
+            if(user.role==='manager'){
+             user.sales=_.map(byRoles['user'],'_id')
+           }        
+           user.save();
+           
+            Event.create({ 
+              _user:user._id,
+              address: 'Development Tools',
+              name: 'Development Tools',
+              description: 'Development Tools',
+              startDate: Date.now(),
+              endDate: Date.now(),
+              isActive: true
+              });
+          });
+         });
+    });
+    });
+ });
+ 

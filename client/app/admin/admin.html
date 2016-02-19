@@ -1,12 +1,90 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
-  <ul class="list-group">
-    <li class="list-group-item" ng-repeat="user in users">
-        <strong>{{user.name}}</strong><br>
-        <span class="text-muted">{{user.email}}</span>
-        <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-    </li>
-  </ul>
+
+    <table st-table="usersDisplay" st-safe-src="users"     class="table table-striped">
+        <thead>
+            <tr>
+                <th st-sort="name" >Name</th>
+                <th st-sort="email">Email</th>
+                <th >Role</th>
+                <th >Relations</th>
+                <th >Action</th>
+            </tr>
+            <tr>
+                <th colspan="5">  
+                    <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in usersDisplay">
+                <td>{{user.name}} </td>
+                <td ng-bind="user.email" ></td>
+                <td>{{user.role}}</td>
+                <td><span ng-if="user.role == 'user'" > {{user._manager.name}}</span></td>
+              
+
+            
+                <td>
+                    <div ng-if="!event.$edit">
+                        <button  type="button" ng-click="edit(user)" class="btn btn-sm ">
+                            <i class="glyphicon glyphicon-th">
+                            </i>
+                        </button>
+                        <button  ng-if="!event.$edit" type="button" ng-click="delete(user)" class="btn btn-sm btn-danger">
+                            <i class="glyphicon glyphicon-remove-circle">
+                            </i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <div st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="7"></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+    <div  ng-if="userEdited.$edit" >      
+        <button  ng-if="userEdited.$edit" type="button" ng-click="save(userEdited)" class="btn btn-sm  btn-success">
+            Save
+        </button>
+        <button  ng-if="userEdited.$edit" type="button" ng-click="cancel(userEdited)" class="btn btn-sm  btn-danger">
+            Cancel
+        </button>
+    </div>
+    <div class="form-group" >
+        <label>Name :</label>                    
+        <input type="text" ng-model="userEdited.name"  ng-if="userEdited.$edit" />   
+        <span  ng-if="!userEdited.$edit" >{{userEdited.name}}</span>
+    </div>
+
+    <div class="form-group" >
+        <label>Email :</label>        
+        <input type="text" ng-model="userEdited.email"  ng-if="userEdited.$edit" />   
+        <span  ng-if="!userEdited.$edit" >{{userEdited.email}}</span>
+    </div>
+      <div class="form-group" >
+        <label>Role :</label>        
+        <select  type="text" ng-model="userEdited.role"   ng-if="userEdited.$edit"    > 
+        <option label="admin" value="admin">admin</option>
+        <option label="manager" value="manager">manager</option>
+        <option label="user" value="user">user</option>
+        </select>
+        <span  ng-if="!userEdited.$edit" >{{userEdited.role}}</span>
+    </div>
+    <div class="form-group" ng-if="userEdited.role == 'user'" >
+        <label>Manager :</label>        
+        <select  type="text" ng-model="userEdited._user"   ng-if="userEdited.$edit"  ng-options="user as user.name for user in managers track by user._id"  ng-change="change(userEdited)"  > </select>
+        <span  ng-if="!userEdited.$edit" >{{userEdited._user.name}}</span>
+    </div>
+ 
+  
+  
+   <a ng-click="delete(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
 </div>

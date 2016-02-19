@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
@@ -14,7 +15,12 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.index = function(req, res) {
-  User.find({}, '-salt -hashedPassword', function (err, users) {
+     var search_params = {};
+     
+  if(req.user.role!=='admin'){
+     search_params['_id']= {$in:_.union( req.user.sales,[req.user._id]) };
+  } 
+  User.find(search_params, '-salt -hashedPassword', function (err, users) {
     if(err) return res.send(500, err);
     res.json(200, users);
   });
@@ -43,7 +49,29 @@ exports.show = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if (err) return next(err);
     if (!user) return res.send(401);
-    res.json(user.profile);
+    res.json(user.info);
+  });
+};
+
+
+exports.update = function (req, res) {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+  User.findById(req.params.id, function (err, thing) {
+    if (err) {
+      return handleError(res, err);
+    }
+    if (!thing) {
+      return res.send(404);
+    }
+    var updated = _.merge(thing, req.body);
+    updated.save(function (err) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return  exports.show(req, res);
+    });
   });
 };
 

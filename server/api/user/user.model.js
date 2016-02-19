@@ -13,7 +13,9 @@ var UserSchema = new Schema({
   },
   hashedPassword: String,
   provider: String,
-  salt: String
+  salt: String,
+  sales:[ {type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  _manager: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 });
 
 /**
@@ -37,6 +39,19 @@ UserSchema
     return {
       'name': this.name,
       'role': this.role
+    };
+  });
+  
+  UserSchema
+  .virtual('info')
+  .get(function() {
+    return {
+      'name': this.name,
+          'email': this.email,
+      'role': this.role,
+      'sales': this.sales,
+      '_manager': this._manager,
+      
     };
   });
 

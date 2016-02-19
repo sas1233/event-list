@@ -10,54 +10,106 @@
 'use strict';
 
 var _ = require('lodash');
+var moment = require('moment');
+var auth = require('../../auth/auth.service');
 var Event = require('./event.model');
 
-// Get list of things
-exports.index = function(req, res) {
-  Thing.find(function (err, things) {
-    if(err) { return handleError(res, err); }
+// Get list of events
+exports.index = function (req, res) {
+
+  var search_params = {};
+  if (req.query.start) {
+    search_params['startDate'] = {$gte: moment(req.query.start).toDate()};
+    search_params['endDate'] = {$lte: moment(req.query.end).toDate()};
+  }
+  if (req.user.role !== 'admin') {
+    search_params['_user'] = {$in: _.union(req.user.sales, [req.user._id])};
+  }
+  var query = Event.find(search_params)
+
+  if (req.user.role !== 'user') {
+    query = query.populate('_user', '_id name');
+  }
+  query.exec(function (err, things) {
+    if (err) {
+      return handleError(res, err);
+    }
     return res.json(200, things);
   });
+
 };
 
-// Get a single thing
-exports.show = function(req, res) {
-  Thing.findById(req.params.id, function (err, thing) {
-    if(err) { return handleError(res, err); }
-    if(!thing) { return res.send(404); }
-    return res.json(thing);
+// Get a single event
+exports.show = function (req, res) {
+  console.log(req.params.id || req.body._id);
+  Event.findOne({
+    _id: req.params.id || req.body._id,
+    /* _user: {$in: _.union(req.user.sales, [req.user._id])}*/
+  }).populate('_user', '_id name')
+    .exec(function (err, thing) {
+      if (err) {
+        return handleError(res, err);
+      }
+      if (!thing) {
+        return res.send(404);
+      }
+      console.log(thing);
+      return res.json(thing);
+    });
+};
+
+// Creates a new event in the DB.
+exports.create = function (req, res) {
+  Event.create(req.body, function (err, thing) {
+    if (err) {
+      return handleError(res, err);
+    }
+    Event.findOne({_id: thing._id})
+      .populate('_user', '_id name')
+      .exec(function (err, thing) {
+        if (err) {
+          return handleError(res, err);
+        }
+        return res.json(thing);
+      });
   });
 };
 
-// Creates a new thing in the DB.
-exports.create = function(req, res) {
-  Thing.create(req.body, function(err, thing) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, thing);
-  });
-};
-
-// Updates an existing thing in the DB.
-exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Thing.findById(req.params.id, function (err, thing) {
-    if (err) { return handleError(res, err); }
-    if(!thing) { return res.send(404); }
+// Updates an existing event in the DB.
+exports.update = function (req, res) {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+  Event.findById(req.params.id, function (err, thing) {
+    if (err) {
+      return handleError(res, err);
+    }
+    if (!thing) {
+      return res.send(404);
+    }
     var updated = _.merge(thing, req.body);
     updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, thing);
+      if (err) {
+        return handleError(res, err);
+      }
+      return exports.show(req, res);
     });
   });
 };
 
-// Deletes a thing from the DB.
-exports.destroy = function(req, res) {
-  Thing.findById(req.params.id, function (err, thing) {
-    if(err) { return handleError(res, err); }
-    if(!thing) { return res.send(404); }
-    thing.remove(function(err) {
-      if(err) { return handleError(res, err); }
+// Deletes a event from the DB.
+exports.destroy = function (req, res) {
+  Event.findById(req.params.id, function (err, thing) {
+    if (err) {
+      return handleError(res, err);
+    }
+    if (!thing) {
+      return res.send(404);
+    }
+    thing.remove(function (err) {
+      if (err) {
+        return handleError(res, err);
+      }
       return res.send(204);
     });
   });

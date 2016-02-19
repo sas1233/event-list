@@ -2,22 +2,36 @@
 
 <header class="hero-unit" id="banner">
   <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-  </div>
+    <h1>Calendar</h1>
+    <h3>{{alertMessage}}</h3>
 </header>
 
 <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
+    
+<div ui-calendar="uiConfig.calendar"  calendar="mainCalendar"  class="span8 calendar" ng-model="eventSource"></div> 
+
+  <table st-table="eventsDisplay" st-safe-src="eventsSelected"     class="table table-striped">
+        <thead>
+            <tr>
+                <th st-sort="name" >Name</th>
+                <th st-sort="description">Description</th>
+            </tr>
+            <tr>
+                <th colspan="7">  
+                    <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr    ng-repeat="event in eventsDisplay">
+                <td>{{event.name}} </td>
+                <td ng-bind-html="event.description" ></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" ng-click="toEventList()" class="btn btn-sm btn-success"> Details </button>
+</div> 
 
 <footer class="footer">
   <div class="container">
