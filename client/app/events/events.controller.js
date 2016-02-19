@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eventListApp')
-        .controller('EventsCtrl', function ($scope, $http, $stateParams, $filter, Auth, User, Event) {
+        .controller('EventsCtrl', function ($scope, $http, $stateParams, $filter, Auth, User, Event,$mdDialog, $mdMedia) {
 
 
           $scope.dateFormat = "YYYY-MM-DD";
@@ -13,7 +13,7 @@ angular.module('eventListApp')
           $scope.end = moment($stateParams.end).toDate();
           if (!$stateParams.start) {
             $scope.start = moment().startOf('day').toDate();
-            $scope.end = moment().add(1,'day').toDate();
+            $scope.end = moment().add(1, 'day').toDate();
           }
           $scope.events = Event.query({'start': moment($scope.start).format($scope.dateFormat), 'end': moment($scope.end).format($scope.dateFormat)});
 
@@ -21,11 +21,12 @@ angular.module('eventListApp')
           $scope.users = User.query();
 
           $scope.delete = function (event) {
-            Event.remove({id: event._id});
-            angular.forEach($scope.events, function (ev, i) {
-              if (ev === event) {
-                $scope.events.splice(i, 1);
-              }
+            Event.remove({id: event._id}, function () {
+              angular.forEach($scope.events, function (ev, i) {
+                if (ev === event) {
+                  $scope.events.splice(i, 1);
+                }
+              });
             });
           };
 
@@ -101,5 +102,33 @@ angular.module('eventListApp')
             event.$edit = false;
           };
 
+  $scope.showAdvanced = function(ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: '/app/events/create.tmpl.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose:true,
+      fullscreen: false
+    })
+    .then(function(answer) {
+      $scope.status = 'You said the information was "' + answer + '".';
+    }, function() {
+      $scope.status = 'You cancelled the dialog.';
+    });
+
+  };
+
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+}
 
         });

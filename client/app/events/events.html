@@ -2,8 +2,8 @@
 
 <div class="container">
  
-    <label>Start :</label>   <input type="date" id="startDate" name="input" ng-model="start"      ng-change="dateChange(start)"    /> 
-    <label>End :</label>  <input type="date" id="endDate" name="input" ng-model="end"  ng-change="dateChange(end)"    /> 
+    <label>Start :</label>  <md-datepicker ng-model="start" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(start)" ></md-datepicker>  
+    <label>End :</label>   <md-datepicker ng-model="end" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(end)" ></md-datepicker>  
     <label>Per page :</label> <input type="number"   ng-model="itemsPerPage"  /> 
     <table st-table="eventsDisplay" st-safe-src="events"     class="table table-striped">
         <thead>
@@ -62,6 +62,12 @@
         </i> Add 
     </button>
 
+    
+        <md-button class="md-primary md-raised" ng-click="showAdvanced($event)" flex="100" flex-gt-md="auto">
+      Custom Dialog
+    </md-button>
+    
+    
     <div  ng-if="eventEdited.$edit" >      
         <button  ng-if="eventEdited.$edit" type="button" ng-click="save(eventEdited)" class="btn btn-sm  btn-success">
             Save
@@ -95,11 +101,9 @@
         <input type="date" id="dateEnd" name="input" ng-model="eventEdited.endDate"     ng-if="eventEdited.$edit" />   
         <span  ng-if="!eventEdited.$edit" >{{eventEdited.endDate| date:'yyyy-MM-dd HH:mm:ss'}}</span>
     </div>
-    <div class="form-group" >
 
-    </div>
-
-
+    
+ 
     <div class="form-group" >
         <label>Description :</label> 
         <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>

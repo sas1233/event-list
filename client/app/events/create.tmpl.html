@@ -1,0 +1,61 @@
+<md-dialog aria-label="Mango (Fruit)"  ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Mango (Fruit)</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
+            <div>
+                <form name="eventForm">
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Name</label>
+                            <input ng-model="eventEdited.name">
+                        </md-input-container>
+                        <label>Start</label>
+                        <md-datepicker ng-model="eventEdited.startDate" md-placeholder="Enter date">
+                        </md-datepicker>
+                        <label>End</label>
+                        <md-datepicker ng-model="eventEdited.endDate" md-placeholder="Enter date">
+                        </md-datepicker>
+                    </div>
+                    <md-input-container class="md-block">
+                        <label>Address</label>
+                        <input ng-model="eventEdited.address">
+                    </md-input-container>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>State</label>
+<!--                         <md-select ng-options="user as user.name for user in users track by user._id" ng-change="change(eventEdited)"  >
+                            </md-select>-->
+                        </md-input-container>
+                    </div>
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>
+                    </md-input-container>
+                </form>
+            </div>
+            </md-content>
+
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+                More on Wikipedia
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="answer('not useful')">
+                Not Useful
+            </md-button>
+            <md-button ng-click="answer('useful')" style="margin-right:20px;">
+                Useful
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

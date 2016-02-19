@@ -9,7 +9,8 @@ angular.module('eventListApp', [
   'smart-table',
   'datePicker',
   'textAngular',
-  'ui.calendar'
+  'ui.calendar',
+  'ngMaterial'
   
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
