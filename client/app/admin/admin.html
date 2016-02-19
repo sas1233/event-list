@@ -83,6 +83,11 @@
         <select  type="text" ng-model="userEdited._user"   ng-if="userEdited.$edit"  ng-options="user as user.name for user in managers track by user._id"  ng-change="change(userEdited)"  > </select>
         <span  ng-if="!userEdited.$edit" >{{userEdited._user.name}}</span>
     </div>
+        <div class="form-group" ng-if="userEdited.role == 'manager'" >
+        <label>Users :</label>        
+        <select  type="text" ng-model="userEdited.sales"   ng-if="userEdited.$edit"  ng-options="user as user.name for user in managers track by user._id"  ng-change="change(userEdited)"  > </select>
+        <span  ng-if="!userEdited.$edit" >{{userEdited._user.name}}</span>
+    </div>
  
   
   

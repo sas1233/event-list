@@ -19,31 +19,26 @@ angular.module('eventListApp')
     };
 
     $scope.selected = function (start, end, jsEvent, view) {
+      $scope.startSelected = start;
+      $scope.endSelected = end;
       $scope.eventsSelected = Event.query({'start': start.format($scope.dateFormat), 'end': end.format($scope.dateFormat)}, function (resp) {
       });
     };
 
     $scope.loadToSource = function () {
-   $scope.events = Event.query({'start': $scope.start.format($scope.dateFormat), 'end': $scope.end.format($scope.dateFormat)},function(data, data1){
-     $scope.eventSource.events = _.map($scope.events, function (event) {
-        console.log(event);
+    $scope.events = Event.query({'start': $scope.start.format($scope.dateFormat), 'end': $scope.end.format($scope.dateFormat)},function(data, data1){
+      $scope.eventSource.events = _.map($scope.events, function (event) {
         return {title: event.name,  start: moment(event.startDate).add(-1,'day').format($scope.dateFormat)  , end: moment(event.endDate).add(1,'day').format($scope.dateFormat) };
       });
-      console.log($scope.eventSource);
-      uiCalendarConfig.calendars.mainCalendar.fullCalendar( 'refetchEvents' );
-      uiCalendarConfig.calendars.mainCalendar.fullCalendar( 'addEventSource', $scope.eventSource );
-     
-      
-    //  $scope.uiConfig.calendar( 'refetchEvents' );
-    });
+        uiCalendarConfig.calendars.mainCalendar.fullCalendar( 'refetchEvents' );
+        uiCalendarConfig.calendars.mainCalendar.fullCalendar( 'addEventSource', $scope.eventSource );
+      });
     };
     
     $scope.loadToSource();
 
     $scope.toEventList = function () {
-
       $state.go('events', {'start': $scope.startSelected.format($scope.dateFormat), 'end': $scope.endSelected.format($scope.dateFormat)});
-
     };
 
     $scope.uiConfig = {

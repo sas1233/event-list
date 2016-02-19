@@ -1,10 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-    <button type="button" ng-click="addNew()" class="btn btn-sm btn-success">
-        <i class="glyphicon glyphicon-plus">
-        </i> Add 
-    </button>
+ 
     <label>Start :</label>   <input type="date" id="startDate" name="input" ng-model="start"      ng-change="dateChange(start)"    /> 
     <label>End :</label>  <input type="date" id="endDate" name="input" ng-model="end"  ng-change="dateChange(end)"    /> 
     <label>Per page :</label> <input type="number"   ng-model="itemsPerPage"  /> 
@@ -60,6 +57,10 @@
         </tfoot>
     </table>
 
+    <button type="button" ng-click="addNew()" ng-if="!eventEdited.$edit" class="btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-plus">
+        </i> Add 
+    </button>
 
     <div  ng-if="eventEdited.$edit" >      
         <button  ng-if="eventEdited.$edit" type="button" ng-click="save(eventEdited)" class="btn btn-sm  btn-success">
