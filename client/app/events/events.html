@@ -1,9 +1,17 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
- 
+
     <label>Start :</label>  <md-datepicker ng-model="start" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(start)" ></md-datepicker>  
-     <label>End :</label>   <md-datepicker ng-model="end" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(end)" ></md-datepicker>  
+    <label>End :</label>   <md-datepicker ng-model="end" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(end)" ></md-datepicker>  
+    <button type="button" ng-click="addNew()" ng-if="!eventEdited.$edit" class="btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-plus">
+        </i> Add 
+    </button>
+    <button type="button" ng-click="deleteSelected()" ng-if="!eventEdited.$edit" class="btn btn-sm btn-danger">
+        <i class="glyphicon glyphicon-remove-circle">
+        </i> Delete selected 
+    </button>
 
     <table st-table="eventsDisplay" st-safe-src="events"     class="table table-striped">
         <thead>
@@ -24,47 +32,46 @@
             </tr>
         </thead>
         <tbody>
-            <tr st-select-row="event" st-select-mode="multiple"   ng-repeat="event in eventsDisplay">
+            <tr st-select-row="event" st-select-mode="multiple" st-selected="change()"   ng-repeat="event in eventsDisplay">
                 <td>{{event.name}} </td>
                 <td ng-bind-html="event.description" ></td>
                 <td>{{event.address}}</td>
                 <td>{{event.startDate| date:'yyyy-MM-dd'}}</td>
                 <td>{{event.endDate| date:'yyyy-MM-dd'}}</td>
-                <td><input type="checkbox" ng-model="event.isActive" ng-click="switchStatus(event)" /></td>                
-
-                <td ng-if="getCurrentUser().role != 'user'" >{{usersMap[event._user].name}}</td>
                 <td>
-                    <div >
-                        <button  type="button" ng-click="edit(event,$event)" class="btn btn-sm ">
-                            <i class="glyphicon glyphicon-th">
-                            </i>
-                        </button>
-                        <button   type="button" ng-click="delete(event)" class="btn btn-sm btn-danger">
-                            <i class="glyphicon glyphicon-remove-circle">
-                            </i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+        <md-checkbox ng-model="event.isActive" ng-change="switchStatus(event)" > </md-checkbox>
+        </td>                
+
+        <td ng-if="getCurrentUser().role != 'user'" >{{usersMap[event._user].name}}</td>
+        <td>
+            <div >
+                <button  type="button" ng-click="edit(event, $event)" class="btn btn-sm ">
+                    <i class="glyphicon glyphicon-th">
+                    </i>
+                </button>
+                <button   type="button" ng-click="delete(event)" class="btn btn-sm btn-danger">
+                    <i class="glyphicon glyphicon-remove-circle">
+                    </i>
+                </button>
+            </div>
+        </td>
+        </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="5" class="text-center">
                     <div st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="7"></div>
                 </td>
-                    <td colspan="2" class="text-center">
-                      <md-input-container class="md-block" >    <label>Per page :</label>     <input type="number"   ng-model="itemsPerPage"  />    </md-input-container>
-                </td>
-            </tr>
+                <td colspan="2" class="text-center">
+        <md-input-container class="md-block" >    <label>Per page :</label>     <input type="number"   ng-model="itemsPerPage"  />    </md-input-container>
+        </td>
+        </tr>
         </tfoot>
     </table>
 
-    <button type="button" ng-click="addNew()" ng-if="!eventEdited.$edit" class="btn btn-sm btn-success">
-        <i class="glyphicon glyphicon-plus">
-        </i> Add 
-    </button>
 
-    
+
+
 
 
 </div>

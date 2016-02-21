@@ -1,0 +1,108 @@
+<md-dialog aria-label="Create/edit User"  ng-cloak>
+    <form name="editUser">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Create/edit User</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-dialog-content >
+            <div class="md-dialog-content">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm >
+                        <label>Name</label>
+                        <input ng-model="user.name" name="name" required>
+                        <div class="errors" ng-messages="editUser.name.$error" ng-if="editUser.name.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Address</label>
+                        <input ng-model="user.email" name="email" required>
+                        <div class="errors" ng-messages="editUser.email.$error" ng-if="editUser.email.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">  
+
+                    <md-input-container  class="md-block" flex-gt-sm  >
+                        <label>Role</label>
+                        <md-select name="manager" ng-model="user.role" required>
+                            <md-option label="admin" value="admin">Admin</md-option>
+                            <md-option label="manager" value="manager">Manager</md-option>
+                            <md-option label="user" value="user">User</md-option>
+                        </md-select>
+                        <div class="errors" ng-messages="editUser.manager.$error" ng-if="editUser.manager.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container  class="md-block" flex-gt-sm  ng-if="user.role == 'user'">
+                        <label>Manager</label>
+                        <md-select name="manager" ng-model="user._manager" required>
+                            <md-option ng-repeat="user in users" value="{{user._id}}">
+                                {{user.name}}
+                            </md-option>
+                        </md-select>
+                        <div class="errors" ng-messages="editUser.manager.$error" ng-if="editUser.manager.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">  
+                    <md-input-container  class="md-block" flex-gt-sm  ng-if="user.role == 'manager'">
+                        <div > 
+                            <md-chips ng-model="user.sales" 
+                                      md-autocomplete-snap
+                                      md-transform-chip="translofrmChip($chip)"
+                                      md-require-match="true"
+                                      >
+                                <md-autocomplete
+                                    md-selected-item="selectedItem"
+                                    md-search-text="searchText"
+                                    md-items="item in searchUser(searchText)"
+                                    md-item-text="item.name"
+                                    md-selected-item-change ="console.log(item)"
+                                    placeholder="Search for a user" >
+                                    <span md-highlight-text="searchText">{{item.name}}</span>
+                                </md-autocomplete>
+                                <md-chip-template>
+                                    <span>{{usersMap[$chip].name}}</span>
+                                </md-chip-template>
+                            </md-chips>
+                        </div>             
+                    </md-input-container>
+
+                </div>
+
+
+
+                <div layout-gt-sm="row" ng-if="user.$save === undefined">  
+                    <md-input-container class="md-block" flex-gt-sm >
+                        <label>password</label>
+                        <input ng-model="user.password" name="password" required >
+                        <div class="errors" ng-messages="editUser.password.$error" ng-if="editUser.password.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="saveDialog(user)" ng-disabled="editUser.$invalid">
+                save
+            </md-button>
+            <md-button ng-click="cancel(user)" style="margin-right:20px;">
+                cancel
+            </md-button>
+        </md-dialog-actions>
+    </form>
+
+
+
+</md-dialog>

@@ -46,8 +46,9 @@ UserSchema
   .virtual('info')
   .get(function() {
     return {
+      '_id': this._id,
       'name': this.name,
-          'email': this.email,
+      'email': this.email,
       'role': this.role,
       'sales': this.sales,
       '_manager': this._manager,

@@ -19,9 +19,9 @@ angular.module('eventListApp')
 
 
     $scope.users = User.query();
-         User.query(function(result){
-           $scope.usersMap = _.keyBy(result,'_id'); 
-         });
+    User.query(function (result) {
+      $scope.usersMap = _.keyBy(result, '_id');
+    });
 
     $scope.delete = function (event) {
       Event.remove({id: event._id}, function () {
@@ -57,8 +57,12 @@ angular.module('eventListApp')
 
 
 
-    $scope.change = function (event) {
-      console.log(event);
+    $scope.deleteSelected = function (event) {     
+      _.forEach($scope.eventsDisplay, function(event){
+        if(event.isSelected){
+          $scope.delete(event);
+        }
+      });
     };
 
     $scope.switchStatus = function (event) {
@@ -71,7 +75,7 @@ angular.module('eventListApp')
       event['startDate'] = new Date(event['startDate']);
       event['endDate'] = new Date(event['endDate']);
       $scope.eventEdited = event;
-      $scope.showAdvanced(ev);
+      $scope.showDialog(ev);
     };
 
     $scope.cancel = function (event) {
@@ -98,7 +102,7 @@ angular.module('eventListApp')
       event.$edit = false;
     };
 
-    $scope.showAdvanced = function (ev) {
+    $scope.showDialog = function (ev) {
       $mdDialog.show({
         controller: DialogController,
         templateUrl: '/app/events/create.tmpl.html',
@@ -133,3 +137,4 @@ angular.module('eventListApp')
     }
 
   });
+
