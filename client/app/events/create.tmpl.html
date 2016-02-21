@@ -1,61 +1,77 @@
-<md-dialog aria-label="Mango (Fruit)"  ng-cloak>
-    <form>
+<md-dialog aria-label="Create/edit Event"  ng-cloak>
+    <form name="editEvent">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Mango (Fruit)</h2>
+                <h2>Create/edit Event</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="cancel()">
-                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
-                </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content>
+        <md-dialog-content >
+            <div class="md-dialog-content">
+                <div layout-gt-sm="row">
 
-            <div>
-                <form name="eventForm">
-                    <div layout-gt-sm="row">
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Name</label>
-                            <input ng-model="eventEdited.name">
-                        </md-input-container>
+                    <div class="md-block" flex-gt-sm >
                         <label>Start</label>
                         <md-datepicker ng-model="eventEdited.startDate" md-placeholder="Enter date">
-                        </md-datepicker>
+                                </md-datepicker>
+                    </div>
+                
+                    <div class="md-block" flex-gt-sm >
                         <label>End</label>
                         <md-datepicker ng-model="eventEdited.endDate" md-placeholder="Enter date">
                         </md-datepicker>
                     </div>
-                    <md-input-container class="md-block">
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm >
+                        <label>Name</label>
+                        <input ng-model="eventEdited.name" name="name" required>
+                             <div class="errors" ng-messages="editEvent.name.$error" ng-if="editEvent.name.$invalid">
+                            <div ng-message="required">Required</div>
+                          </div>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
                         <label>Address</label>
-                        <input ng-model="eventEdited.address">
+                        <input ng-model="eventEdited.address" name="address" required>
+                             <div class="errors" ng-messages="editEvent.address.$error" ng-if="editEvent.address.$invalid">
+                            <div ng-message="required">Required</div>
+                          </div>
                     </md-input-container>
-                    <div layout-gt-sm="row">
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>State</label>
-<!--                         <md-select ng-options="user as user.name for user in users track by user._id" ng-change="change(eventEdited)"  >
-                            </md-select>-->
-                        </md-input-container>
-                    </div>
-                    <md-input-container class="md-block">
-                        <label>Description</label>
-                        <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>
+                    <md-input-container  class="md-block" flex-gt-sm  ng-if="getCurrentUser().role != 'user'">
+                        <label>User</label>
+                        <md-select name="owner" ng-model="eventEdited._user" required>
+                        <md-option ng-repeat="user in users" value="{{user._id}}">
+                          {{user.name}}
+                        </md-option>
+                      </md-select>
+                    <div class="errors" ng-messages="editEvent.owner.$error" ng-if="editEvent.owner.$invalid">
+                            <div ng-message="required">Required</div>
+                          </div>
                     </md-input-container>
-                </form>
-            </div>
-            </md-content>
+                </div>
+                <div layout-gt-sm="row">
 
+                </div>
+                <md-input-container class="md-block" style="width: 610px;">
+                    <label>Description</label>
+                    <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>
+                </md-input-container>
+
+
+
+            </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
-                More on Wikipedia
-            </md-button>
             <span flex></span>
-            <md-button ng-click="answer('not useful')">
-                Not Useful
+            <md-button ng-click="saveDialog(eventEdited)" ng-disabled="editEvent.$invalid">
+                save
             </md-button>
-            <md-button ng-click="answer('useful')" style="margin-right:20px;">
-                Useful
+            <md-button ng-click="cancel(eventEdited)" style="margin-right:20px;">
+                cancel
             </md-button>
         </md-dialog-actions>
     </form>
+
+
+
 </md-dialog>

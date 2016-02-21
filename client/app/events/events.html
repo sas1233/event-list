@@ -3,8 +3,8 @@
 <div class="container">
  
     <label>Start :</label>  <md-datepicker ng-model="start" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(start)" ></md-datepicker>  
-    <label>End :</label>   <md-datepicker ng-model="end" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(end)" ></md-datepicker>  
-    <label>Per page :</label> <input type="number"   ng-model="itemsPerPage"  /> 
+     <label>End :</label>   <md-datepicker ng-model="end" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(end)" ></md-datepicker>  
+
     <table st-table="eventsDisplay" st-safe-src="events"     class="table table-striped">
         <thead>
             <tr>
@@ -14,14 +14,13 @@
                 <th st-sort="startDate">Start</th>
                 <th st-sort="endDate">End</th>
                 <th st-sort="isActive">Active</th>
-                <th st-sort="_user.name">User</th>
+                <th st-sort="_user"  ng-if="getCurrentUser().role != 'user'" >User</th>
                 <th >Action</th>
             </tr>
             <tr>
                 <th colspan="7">  
                     <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
                 </th>
-
             </tr>
         </thead>
         <tbody>
@@ -29,18 +28,18 @@
                 <td>{{event.name}} </td>
                 <td ng-bind-html="event.description" ></td>
                 <td>{{event.address}}</td>
-                <td>{{event.startDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td>{{event.endDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{event.startDate| date:'yyyy-MM-dd'}}</td>
+                <td>{{event.endDate| date:'yyyy-MM-dd'}}</td>
                 <td><input type="checkbox" ng-model="event.isActive" ng-click="switchStatus(event)" /></td>                
 
-                <td ng-if="getCurrentUser().role != 'user'" >{{event._user.name}}</td>
+                <td ng-if="getCurrentUser().role != 'user'" >{{usersMap[event._user].name}}</td>
                 <td>
-                    <div ng-if="!event.$edit">
-                        <button  type="button" ng-click="edit(event)" class="btn btn-sm ">
+                    <div >
+                        <button  type="button" ng-click="edit(event,$event)" class="btn btn-sm ">
                             <i class="glyphicon glyphicon-th">
                             </i>
                         </button>
-                        <button  ng-if="!event.$edit" type="button" ng-click="delete(event)" class="btn btn-sm btn-danger">
+                        <button   type="button" ng-click="delete(event)" class="btn btn-sm btn-danger">
                             <i class="glyphicon glyphicon-remove-circle">
                             </i>
                         </button>
@@ -53,6 +52,9 @@
                 <td colspan="5" class="text-center">
                     <div st-pagination="" st-items-by-page="itemsPerPage" st-displayed-pages="7"></div>
                 </td>
+                    <td colspan="2" class="text-center">
+                      <md-input-container class="md-block" >    <label>Per page :</label>     <input type="number"   ng-model="itemsPerPage"  />    </md-input-container>
+                </td>
             </tr>
         </tfoot>
     </table>
@@ -63,52 +65,6 @@
     </button>
 
     
-        <md-button class="md-primary md-raised" ng-click="showAdvanced($event)" flex="100" flex-gt-md="auto">
-      Custom Dialog
-    </md-button>
-    
-    
-    <div  ng-if="eventEdited.$edit" >      
-        <button  ng-if="eventEdited.$edit" type="button" ng-click="save(eventEdited)" class="btn btn-sm  btn-success">
-            Save
-        </button>
-        <button  ng-if="eventEdited.$edit" type="button" ng-click="cancel(eventEdited)" class="btn btn-sm  btn-danger">
-            Cancel
-        </button>
-    </div>
-    <div class="form-group" >
-        <label>Name :</label>                    
-        <input type="text" ng-model="eventEdited.name"  ng-if="eventEdited.$edit" />   
-        <span  ng-if="!eventEdited.$edit" >{{eventEdited.name}}</span>
-    </div>
-
-    <div class="form-group" >
-        <label>Address :</label>        
-        <input type="text" ng-model="eventEdited.address"  ng-if="eventEdited.$edit" />   
-        <span  ng-if="!eventEdited.$edit" >{{eventEdited.address}}</span>
-    </div>
-    <div class="form-group" ng-if="getCurrentUser().role != 'user'" >
-        <label>User :</label>        
-        <select  type="text" ng-model="eventEdited._user"   ng-if="eventEdited.$edit"  ng-options="user as user.name for user in users track by user._id"  ng-change="change(eventEdited)"  > </select>
-        <span  ng-if="!eventEdited.$edit" >{{eventEdited._user.name}}</span>
-    </div>
-    <div class="form-group" >
-        <label>Start Date :</label>  
-        <input type="date" id="dateEnd" name="input" ng-model="eventEdited.startDate"    ng-if="eventEdited.$edit" />   
-        <span  ng-if="!eventEdited.$edit" >{{eventEdited.startDate| date:'yyyy-MM-dd HH:mm:ss'}}</span>
-
-        <label>End Date :</label>                   
-        <input type="date" id="dateEnd" name="input" ng-model="eventEdited.endDate"     ng-if="eventEdited.$edit" />   
-        <span  ng-if="!eventEdited.$edit" >{{eventEdited.endDate| date:'yyyy-MM-dd HH:mm:ss'}}</span>
-    </div>
-
-    
- 
-    <div class="form-group" >
-        <label>Description :</label> 
-        <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>
-        <span  ng-if="!eventEdited.$edit" ng-bind-html="eventEdited.description" ></span>
-    </div>
 
 
 </div>

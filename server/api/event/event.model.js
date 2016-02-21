@@ -16,5 +16,5 @@ var EventSchema = new Schema({
       default: Date.now()
     }
 });
-
+ 
 module.exports = mongoose.model('Event', EventSchema);

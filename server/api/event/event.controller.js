@@ -28,7 +28,7 @@ exports.index = function (req, res) {
   var query = Event.find(search_params)
 
   if (req.user.role !== 'user') {
-    query = query.populate('_user', '_id name');
+ //   query = query.populate('_user', '_id name');
   }
   query.exec(function (err, things) {
     if (err) {
@@ -45,7 +45,7 @@ exports.show = function (req, res) {
   Event.findOne({
     _id: req.params.id || req.body._id,
     /* _user: {$in: _.union(req.user.sales, [req.user._id])}*/
-  }).populate('_user', '_id name')
+  })//.populate('_user', '_id name')
     .exec(function (err, thing) {
       if (err) {
         return handleError(res, err);
@@ -65,7 +65,7 @@ exports.create = function (req, res) {
       return handleError(res, err);
     }
     Event.findOne({_id: thing._id})
-      .populate('_user', '_id name')
+    //  .populate('_user', '_id name')
       .exec(function (err, thing) {
         if (err) {
           return handleError(res, err);
