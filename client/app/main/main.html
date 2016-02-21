@@ -14,6 +14,7 @@
         <div ng-if="eventsSelected.length == 0 && startSelected != null" >Events not found for selected period.</div>
         <div ng-if="eventsSelected.length > 0" >Selected period :{{startSelected.format(dateFormat)}}  - {{endSelected.format(dateFormat)}} found {{eventsSelected.length}} events.</div>
     </h3>
+    <div id="resultsblock" ng-if="eventsSelected.length > 0">
     <table st-table="eventsDisplay" st-safe-src="eventsSelected"     class="table table-striped">
         <thead>
             <tr>
@@ -29,6 +30,7 @@
         </tbody>
     </table>
     <button type="button" ng-click="toEventList()" class="btn btn-sm btn-success"> Details </button>
+    </div>
 </div> 
 
 <footer class="footer">
