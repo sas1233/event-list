@@ -12,8 +12,8 @@ angular.module('eventListApp')
     $scope.start = moment($stateParams.start).toDate();
     $scope.end = moment($stateParams.end).toDate();
     if (!$stateParams.start) {
-      $scope.start = moment().startOf('day').toDate();
-      $scope.end = moment().add(1, 'day').toDate();
+      $scope.start = moment().add(-1, 'year').startOf('day').toDate();
+      $scope.end = moment().add(1, 'year').toDate();
     }
     $scope.events = Event.query({'start': moment($scope.start).format($scope.dateFormat), 'end': moment($scope.end).format($scope.dateFormat)});
 

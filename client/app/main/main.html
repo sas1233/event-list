@@ -1,26 +1,24 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>Calendar</h1>
-    <h3>{{alertMessage}}</h3>
+    <div class="container">
+        <h1>Calendar</h1>
+        <h3>{{alertMessage}}</h3>
 </header>
 
 <div class="container">
-    
-<div ui-calendar="uiConfig.calendar"  calendar="mainCalendar"  class="span8 calendar" ng-model="eventSource"></div> 
 
-  <table st-table="eventsDisplay" st-safe-src="eventsSelected"     class="table table-striped">
+    <div ui-calendar="uiConfig.calendar"  calendar="mainCalendar"  class="span8 calendar" ng-model="eventSource"></div> 
+    <h3>
+        <div ng-if="startSelected == null" >Please select period to view details.</div>
+        <div ng-if="eventsSelected.length == 0 && startSelected != null" >Events not found for selected period.</div>
+        <div ng-if="eventsSelected.length > 0" >Selected period :{{startSelected.format(dateFormat)}}  - {{endSelected.format(dateFormat)}} found {{eventsSelected.length}} events.</div>
+    </h3>
+    <table st-table="eventsDisplay" st-safe-src="eventsSelected"     class="table table-striped">
         <thead>
             <tr>
                 <th st-sort="name" >Name</th>
                 <th st-sort="description">Description</th>
-            </tr>
-            <tr>
-                <th colspan="7">  
-                    <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
-                </th>
-
             </tr>
         </thead>
         <tbody>
@@ -34,6 +32,6 @@
 </div> 
 
 <footer class="footer">
-  <div class="container">
-  </div>
+    <div class="container">
+    </div>
 </footer>

@@ -18,14 +18,23 @@ var Event = require('./event.model');
 exports.index = function (req, res) {
 
   var search_params = {};
+  var start = moment(req.query.start).startOf("day").toDate();
+    var end = moment(req.query.end).endOf("day").toDate();
+    
   if (req.query.start) {
-    search_params['startDate'] = {$gte: moment(req.query.start).toDate()};
-    search_params['endDate'] = {$lte: moment(req.query.end).toDate()};
+    search_params['startDate'] = {$lte: end} ;
+    search_params['endDate'] = {$gte: start};
   }
   if (req.user.role !== 'admin') {
     search_params['_user'] = {$in: _.union(req.user.sales, [req.user._id])};
   }
   var query = Event.find(search_params)
+  
+  /*if (req.query.start) {
+    query.$where('(this.startDate>= new Date("'+start+'") && this.endDate<=new Date("'+end+'"))'+
+                 ' ||(this.startDate<=new Date("'+start+'") && this.endDate>=new Date("'+end+'"))'+
+                 ' ||(this.startDate<=new Date("'+start+'") && this.endDate>=new Date("'+end+'"))');
+  }*/
 
   if (req.user.role !== 'user') {
  //   query = query.populate('_user', '_id name');

@@ -13,9 +13,9 @@
                     <div class="md-block" flex-gt-sm >
                         <label>Start</label>
                         <md-datepicker ng-model="eventEdited.startDate" md-placeholder="Enter date">
-                                </md-datepicker>
+                        </md-datepicker>
                     </div>
-                
+
                     <div class="md-block" flex-gt-sm >
                         <label>End</label>
                         <md-datepicker ng-model="eventEdited.endDate" md-placeholder="Enter date">
@@ -26,38 +26,38 @@
                     <md-input-container class="md-block" flex-gt-sm >
                         <label>Name</label>
                         <input ng-model="eventEdited.name" name="name" required>
-                             <div class="errors" ng-messages="editEvent.name.$error" ng-if="editEvent.name.$invalid">
+                        <div class="errors" ng-messages="editEvent.name.$error" ng-if="editEvent.name.$invalid">
                             <div ng-message="required">Required</div>
-                          </div>
+                        </div>
                     </md-input-container>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Address</label>
                         <input ng-model="eventEdited.address" name="address" required>
-                             <div class="errors" ng-messages="editEvent.address.$error" ng-if="editEvent.address.$invalid">
+                        <div class="errors" ng-messages="editEvent.address.$error" ng-if="editEvent.address.$invalid">
                             <div ng-message="required">Required</div>
-                          </div>
+                        </div>
                     </md-input-container>
                     <md-input-container  class="md-block" flex-gt-sm  ng-if="getCurrentUser().role != 'user'">
                         <label>User</label>
                         <md-select name="owner" ng-model="eventEdited._user" required>
-                        <md-option ng-repeat="user in users" value="{{user._id}}">
-                          {{user.name}}
-                        </md-option>
-                      </md-select>
-                    <div class="errors" ng-messages="editEvent.owner.$error" ng-if="editEvent.owner.$invalid">
+                            <md-option ng-repeat="user in users" value="{{user._id}}">
+                                {{user.name}}
+                            </md-option>
+                        </md-select>
+                        <div class="errors" ng-messages="editEvent.owner.$error" ng-if="editEvent.owner.$invalid">
                             <div ng-message="required">Required</div>
-                          </div>
+                        </div>
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
 
+                 
+                    <md-input-container class="md-block" style="width: 610px;">
+   <label>Description</label>
+                        <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>
+                    </md-input-container>
+
                 </div>
-                <md-input-container class="md-block" style="width: 610px;">
-                    <label>Description</label>
-                    <div text-angular ng-model="eventEdited.description" ng-if="eventEdited.$edit"  ></div>
-                </md-input-container>
-
-
 
             </div>
         </md-dialog-content>
