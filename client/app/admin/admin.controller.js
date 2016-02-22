@@ -44,7 +44,7 @@ angular.module('eventListApp')
 
     $scope.cancel = function (user) {
 
-      if (user.$save !== undefined) {
+      if (user&& user.$save !== undefined) {
         user = User.get({id: user._id});
       }
 
@@ -112,7 +112,7 @@ angular.module('eventListApp')
       };
 
       $scope.hide = function () {
-        $mdDialog.hide();
+         $mdDialog.cancel($scope.eventEdited);
       };
       $scope.cancel = function () {
         $mdDialog.cancel($scope.user);

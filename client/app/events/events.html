@@ -4,11 +4,11 @@
 
     <label>Start :</label>  <md-datepicker ng-model="start" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(start)" ></md-datepicker>  
     <label>End :</label>   <md-datepicker ng-model="end" id="startDate" md-placeholder="Enter date"  ng-change="dateChange(end)" ></md-datepicker>  
-    <button type="button" ng-click="addNew()" ng-if="!eventEdited.$edit" class="btn btn-sm btn-success">
+    <button type="button" ng-click="addNew()"  class="btn btn-sm btn-success">
         <i class="glyphicon glyphicon-plus">
         </i> Add 
     </button>
-    <button type="button" ng-click="deleteSelected()" ng-if="!eventEdited.$edit" class="btn btn-sm btn-danger">
+    <button type="button" ng-click="deleteSelected()"  class="btn btn-sm btn-danger">
         <i class="glyphicon glyphicon-remove-circle">
         </i> Delete selected 
     </button>
@@ -26,10 +26,10 @@
                 <th >Action</th>
             </tr>
             <tr>
-                <th colspan="7">  
+                <th colspan="4">  
                     <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
                 </th>
-            </tr>
+        </tr>
         </thead>
         <tbody>
             <tr st-select-row="event" st-select-mode="multiple" st-selected="change()"   ng-repeat="event in eventsDisplay">
@@ -65,7 +65,7 @@
                 <td colspan="2" class="text-center">
         <md-input-container class="md-block" >    <label>Per page :</label>     <input type="number"   ng-model="itemsPerPage"  />    </md-input-container>
         </td>
-        </tr>
+            </tr>
         </tfoot>
     </table>
 

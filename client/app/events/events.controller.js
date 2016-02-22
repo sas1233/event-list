@@ -79,9 +79,11 @@ angular.module('eventListApp')
     };
 
     $scope.cancel = function (event) {
-      event.$edit = false;
-      if (event.$save !== undefined) {
-        event = Event.get({id: event._id});
+      if(event){
+        event.$edit = false;
+        if (event.$save !== undefined) {
+          event = Event.get({id: event._id});
+        }
       }
     };
 
@@ -126,7 +128,7 @@ angular.module('eventListApp')
       $scope.users = User.query();
           $scope.getCurrentUser = Auth.getCurrentUser;
       $scope.hide = function () {
-        $mdDialog.hide();
+        $mdDialog.cancel($scope.eventEdited);
       };
       $scope.cancel = function () {
         $mdDialog.cancel($scope.eventEdited);
