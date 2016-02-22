@@ -255,7 +255,10 @@ module.exports = function (grunt) {
     usemin: {
       html: ['<%= yeoman.dist %>/public/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/public/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/public/{,*/}*.js'],
+      js: [
+        '<%= yeoman.dist %>/public/{,*/}*.js',
+        '!<%= yeoman.dist %>/public/bower_components/spin.js'
+      ],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>/public',
