@@ -297,6 +297,20 @@ module.exports = function (grunt) {
       }
     },
 
+    // Uncomment to beautify javascript files for debugging
+//    uglify: {
+//      options: {
+//        beautify: true,
+//        compress: false
+//      }
+//    },
+    uglify: {
+      options: {
+        mangle: true,
+        compress: false
+      }
+    },
+
     // Allow the use of non-minsafe AngularJS files. Automatically makes it
     // minsafe compatible so Uglify does not destroy the ng references
     ngAnnotate: {
@@ -304,7 +318,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '.tmp/concat',
-          src: '*/**.js',
+          src: '**/*.js',
           dest: '.tmp/concat'
         }]
       }
